@@ -1,4 +1,12 @@
-# Release notes: backend prototype (Days 1-10)
+# Release notes
+
+## Latest: sign-up and citizen home (branch `feature/sign-up`)
+- **Sign up:** new `/register` page and public `POST /api/auth/register`. Creates CITIZEN (default) or VOLUNTEER accounts only and signs the user in. Duplicate e-mails give 409.
+- **Citizen and volunteer home:** one `/home` page listing open shelters with free beds (`GET /api/shelters/open`, public fields only). These roles are redirected away from every staff screen and see only "Home" in the menu.
+- **Docs:** diagrams in `docs/diagrams/` (use case, class, activity, ER, data flow); API contract, approvals (section E), demo script, integration guide, security review and status updated.
+- **Limits:** no e-mail verification or sign-up rate limit; citizens cannot submit or track requests (decision O4); no screen yet for an admin to create staff users. Verified by unit tests and compilation only, not against a live database or in a browser.
+
+# Backend prototype (Days 1-10)
 
 ## What works (backend)
 - Sign-in with roles; disasters and affected areas; need requests with the full state machine, history and cancel rules.

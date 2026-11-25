@@ -45,5 +45,11 @@ Full wording of every assumption is in `PROJECT_STATUS.md` (Day 3 to Day 10 sect
 |---|---|---|---|
 | Node.js allowed only as build tooling for the Vaadin frontend (no Node server, no TypeScript or React application code) | Approve. Vaadin 25 needs it to build, and CI already uses it this way | pending | pending |
 
+## E. Added with public sign-up (needs both members)
+| ID | Decision | Proposed | Recommended | Neha | Divay |
+|---|---|---|---|---|---|
+| E1 | May anyone create an account on the sign-up page? | Yes, but only as CITIZEN or VOLUNTEER; staff roles stay admin-issued | Keep, and add e-mail verification and a sign-up rate limit before public use | pending | pending |
+| E2 | What may a citizen or volunteer see? | One home page with open shelters that have free beds (public fields only) | Keep; decide with B4 whether citizens may later report needs | pending | pending |
+
 ## Known limits that are accepted for the prototype (no approval needed, but know them)
 Login rate limits reset when the server restarts, and tokens cannot be revoked before they expire (1 hour). Fine for one server and a demo; change before any public launch (`SECURITY_REVIEW.md`).

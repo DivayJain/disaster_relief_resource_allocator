@@ -78,3 +78,10 @@ Indexes: need_requests(status, area, priority), inventory(warehouse, resource), 
 2. DTO shapes only via `API_CONTRACT.md`; no shared Maven module for now.
 3. Demo data is separate and labelled (D5).
 4. Compatibility check on Day 2: Boot 4 / Jackson 3 / Vaadin 25 startup and JSON smoke test.
+
+
+## 9. Diagrams and later additions
+- Use case, class, activity, ER and data flow diagrams are in `docs/diagrams/` (index: `diagrams/README.md`). They describe the system as built, including sections 5 and 8 above once implemented.
+- **Public sign-up (A17):** `POST /api/auth/register` is public like login; it can create only CITIZEN or VOLUNTEER accounts. Staff roles remain admin-issued.
+- **Non-staff access (A18):** CITIZEN and VOLUNTEER reach one Vaadin screen, `/home`. `AuthGuard` redirects them away from every staff route, and the server still refuses staff APIs with 403. The one API they use is `GET /api/shelters/open`, which returns public shelter fields only.
+- Deployment note: the stack is two long-running Java services plus PostGIS, so it needs a container host (Docker Compose, Render, Railway, Fly.io or a VPS). Serverless platforms such as Vercel cannot run it. See decision D6.

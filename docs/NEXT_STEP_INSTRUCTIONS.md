@@ -14,5 +14,8 @@ Neha and Divay each go through `APPROVALS.md`, mark every row `approved` or `cha
 ## 4. Deployment (Divay)
 Decision D6: add backend and frontend services to Docker Compose, choose a host, then HTTPS, secrets, backups and monitoring. Run the backend with `SPRING_PROFILES_ACTIVE=prod`, never `dev`.
 
+## 4a. Review the sign-up branch
+Open a pull request from `feature/sign-up`, run the demo steps in `DEMO_SCRIPT.md` Part 3 against a real database and browser (the new endpoints have only had unit tests), and record decisions E1 and E2 in `APPROVALS.md`.
+
 ## 5. Before any public use
 Work through the open items in `SECURITY_REVIEW.md`: persistent login rate limit, token revocation, and a dependency scan review (Dependabot alerts must be switched on in the repository settings).
