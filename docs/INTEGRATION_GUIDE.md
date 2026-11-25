@@ -63,7 +63,9 @@ Open <http://localhost:8081>. The first start downloads the Vaadin front-end bui
 | `officer@demo.drrc.local` | Relief officer | Create disasters/areas; verify, approve, reject, cancel requests |
 | `field@demo.drrc.local` | Field worker | Submit requests; cancel own pending request |
 | `ngo@demo.drrc.local` | NGO coordinator | Submit requests |
-| `citizen@demo.drrc.local`, `volunteer@demo.drrc.local` | Citizen, volunteer | Cannot use the staff screens |
+| `citizen@demo.drrc.local`, `volunteer@demo.drrc.local` | Citizen, volunteer | Cannot use the staff screens; see only the Home page (open shelters with free beds) |
+
+Anyone can also create a CITIZEN or VOLUNTEER account at <http://localhost:8081/register> (link "Sign up" on the login page); this works in every profile, including `prod`. Staff accounts cannot be created there. Diagrams of the system are in `diagrams/README.md`.
 These accounts exist only with the `dev` profile. Never run `dev` on a public server.
 
 ## 7a. Optional: report analyzer settings

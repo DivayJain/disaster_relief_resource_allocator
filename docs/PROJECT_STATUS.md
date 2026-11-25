@@ -238,3 +238,19 @@ V1-V6 and both seed files applied; seed run twice inserts nothing new; `day5_che
 
 ## Frontend Days 5-10 (screens)
 Added Vaadin screens for: dashboard, live map, inventory (receive stock, history), shelters (occupancy, alternatives), allocation (recommend, edit, approve, reject), dispatch (timeline, status), volunteers (register, availability, tasks), partners, alerts, report analyzer, analytics (+ PDF), audit log. Each screen hides itself from roles the backend would refuse. Not compiled in the sandbox (no Maven Central): verify with `.\mvnw.cmd clean test` and by clicking through `docs/DEMO_SCRIPT.md`. The VOLUNTEER role has no web screen yet (the backend lists volunteers for staff only).
+
+
+## Public sign-up and citizen home (added after Day 10)
+**What changed**
+- `POST /api/auth/register` (public) creates a user with role CITIZEN (default) or VOLUNTEER, stores a BCrypt hash, and returns the same token response as login. Any other role gives 400; a duplicate e-mail (case-insensitive) gives 409 `EMAIL_TAKEN`. Password must be 8 to 200 characters.
+- `AppUser` now generates its own id (`@GeneratedValue`, IDENTITY) so it can be inserted; before this the entity was read-only.
+- Frontend: `/register` page (`RegisterView`), a "Sign up" link on the login page, and `AuthGuard` treats `/login` and `/register` as the only public pages.
+- Citizens and volunteers get one screen, `/home` (`CitizenHomeView`), which lists open shelters that still have free beds from the new `GET /api/shelters/open` (any signed-in user; name, address, area, free beds, accessibility and facilities only). `AuthGuard` sends non-staff users to `/home` from every other page, and the sidebar shows only "Home" for them. The "Open request #" box and the alerts bell are staff-only.
+- Diagrams added in `docs/diagrams/` (use case, class, activity, ER, data flow).
+
+**Tests:** three new `AuthServiceTest` cases (register defaults to citizen, privileged role rejected, duplicate e-mail rejected). Backend and frontend `mvn test` pass; the database-backed integration tests were skipped on the machine that ran them, so the new endpoints have not been exercised against a real PostGIS database or in a browser.
+
+**Not built / assumptions**
+- S1 Public self-registration is limited to CITIZEN and VOLUNTEER. Staff roles stay admin-issued (there is still no admin screen to create staff users; they are seeded or inserted in SQL).
+- S2 Citizens still cannot submit or track relief requests (O4 stays "not allowed"). Volunteers have no volunteer-specific screen yet, although the API lets a volunteer manage their own record.
+- S3 Sign-up has no e-mail verification, CAPTCHA or rate limit (see `SECURITY_REVIEW.md` open items 8 and 9).

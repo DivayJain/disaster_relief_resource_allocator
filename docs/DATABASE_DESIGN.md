@@ -173,3 +173,10 @@ Version numbers may be adjusted if the team changes implementation order; applie
 - **V9 priority + allocation:** `need_requests` gets `priority_reasons`, `priority_calculated_at`, `priority_overridden`, `priority_override_reason` (score and category set together; an override needs a reason). `allocations` (one live allocation per request via a partial unique index; allocated ≤ requested; `version` for stale protection), `allocation_items`, `allocation_not_selected`, `allocation_reservations` (which inventory lines were reserved, so dispatch deducts exactly those).
 - **V10 dispatch, audit, alerts:** `dispatches` (unique per allocation + warehouse), `delivery_updates`, `audit_logs` (append-only trigger), `alerts` (NEW/READ).
 - **V11 volunteers, partners, analyzer:** `volunteers`, `volunteer_assignments`, `partner_contributions`, `ai_analyses` (report text is stored already scrubbed of personal identifiers; a model result is only a suggestion with a review status).
+
+
+## Diagrams
+The full schema as Mermaid ER diagrams (relationships, core tables with columns, supporting tables) is in [`diagrams/ER_DIAGRAM.md`](diagrams/ER_DIAGRAM.md). Related: [use case](diagrams/USE_CASE_DIAGRAM.md), [class](diagrams/CLASS_DIAGRAM.md), [activity](diagrams/ACTIVITY_DIAGRAM.md) and [data flow](diagrams/DATA_FLOW_DIAGRAM.md) diagrams.
+
+## Note on sign-up
+Public sign-up inserts into `users` only (role CITIZEN or VOLUNTEER, no organization, `enabled = TRUE`, `preferred_language = 'en'`). No migration was needed. Duplicate e-mails are stopped by the unique index `uq_users_email_lower`; the backend also checks first so the user gets a clear 409.

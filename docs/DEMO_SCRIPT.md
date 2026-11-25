@@ -38,8 +38,9 @@ Accounts used: `officer@demo.drrc.local`, `field@demo.drrc.local`, `warehouse1@d
 | Situation report | **Analytics & reports** -> **Download situation-report.pdf** | One-page summary; each download is itself written to the audit log |
 
 ## Part 3: access control (about 1 minute)
-1. Log in as `citizen@demo.drrc.local`: staff screens are not in the menu, and calling them directly is refused by the server (403).
-2. Try three wrong passwords for any account, then a right one: after five failures sign-in is blocked for a few minutes (HTTP 429).
+1. Log in as `citizen@demo.drrc.local`: you land on **Home** (open shelters with free beds). Only "Home" is in the menu, typing a staff address such as `/disasters` sends you back to Home, and calling a staff API directly is refused by the server (403).
+2. Log out, click **Sign up** on the login page, create a new account (account type Citizen), and check that you are signed in and see the same Home page. Try the same e-mail again: "An account with this email already exists." Staff roles are not offered on this page.
+3. Try three wrong passwords for any account, then a right one: after five failures sign-in is blocked for a few minutes (HTTP 429).
 
 ## Say this, honestly
 - Priority weights, the fairness cap and who may approve allocations are **proposals awaiting approval** (`APPROVALS.md`).
