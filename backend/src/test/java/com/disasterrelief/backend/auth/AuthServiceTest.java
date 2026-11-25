@@ -106,4 +106,32 @@ class AuthServiceTest {
         String text = UserSummary.from(user(true)).toString();
         assertFalse(text.contains("$2"));
     }
+
+    @Test
+    void registerCreatesCitizenAndIssuesToken() {
+        when(users.findByEmailIgnoreCase("new@x.org")).thenReturn(Optional.empty());
+        when(users.saveAndFlush(any())).thenAnswer(inv -> inv.getArgument(0));
+        when(jwtService.issue(any())).thenReturn(new JwtService.IssuedToken("tok", 3600));
+
+        LoginResponse response = service.register(new RegisterRequest(" New User ", " new@x.org ", "Password1", null));
+
+        assertEquals(Role.CITIZEN, response.user().role());
+        assertEquals("New User", response.user().fullName());
+        assertEquals("tok", response.accessToken());
+    }
+
+    @Test
+    void registerRejectsPrivilegedRole() {
+        assertThrows(ApiException.class,
+                () -> service.register(new RegisterRequest("A", "a@x.org", "Password1", Role.ADMIN)));
+        verify(users, never()).saveAndFlush(any());
+    }
+
+    @Test
+    void registerRejectsDuplicateEmail() {
+        when(users.findByEmailIgnoreCase("officer@demo.drrc.local")).thenReturn(Optional.of(user(true)));
+        ApiException ex = assertThrows(ApiException.class, () -> service.register(
+                new RegisterRequest("A", "officer@demo.drrc.local", "Password1", Role.VOLUNTEER)));
+        assertEquals("EMAIL_TAKEN", ex.code());
+    }
 }

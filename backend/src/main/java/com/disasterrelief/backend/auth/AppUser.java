@@ -4,11 +4,13 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 /**
- * Read-only view of the {@code users} table for authentication. Only the columns needed for login are mapped;
+ * View of the {@code users} table for authentication and public sign-up. Only the columns needed for both are mapped;
  * the entity is never returned from the API (see {@link UserSummary}). User management arrives in a later milestone.
  */
 @Entity
@@ -16,6 +18,7 @@ import jakarta.persistence.Table;
 public class AppUser {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "full_name", nullable = false)

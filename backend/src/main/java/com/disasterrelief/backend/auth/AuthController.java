@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-/** POST /api/auth/login (public) and GET /api/auth/me (any authenticated user). See docs/API_CONTRACT.md. */
+/** POST /api/auth/login and /api/auth/register (public) and GET /api/auth/me (any authenticated user). See docs/API_CONTRACT.md. */
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -45,6 +46,12 @@ public class AuthController {
             }
             throw ex;
         }
+    }
+
+    @PostMapping("/register")
+    @ResponseStatus(HttpStatus.CREATED)
+    public LoginResponse register(@Valid @RequestBody RegisterRequest request) {
+        return authService.register(request);
     }
 
     @GetMapping("/me")

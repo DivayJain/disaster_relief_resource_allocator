@@ -16,6 +16,7 @@ import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouterLink;
 
 /** Login page. The only page reachable without a token. */
 @Route("login")
@@ -52,7 +53,8 @@ public class LoginView extends VerticalLayout {
 
         add(new H1("Disaster Relief Resource Coordinator"),
                 new Paragraph("Log in with your official account."),
-                email, password, error, submit);
+                email, password, error, submit,
+                new Paragraph("New here?"), new RouterLink("Sign up", RegisterView.class));
     }
 
     private void attemptLogin() {
