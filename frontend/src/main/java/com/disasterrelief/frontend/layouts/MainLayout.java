@@ -10,6 +10,7 @@ import com.disasterrelief.frontend.components.Formats;
 import com.disasterrelief.frontend.components.J;
 import com.disasterrelief.frontend.security.Roles;
 import com.disasterrelief.frontend.session.UserSession;
+import com.disasterrelief.frontend.views.CitizenHomeView;
 import com.disasterrelief.frontend.views.LoginView;
 import com.disasterrelief.frontend.views.StatusView;
 import com.disasterrelief.frontend.views.AlertsView;
@@ -77,8 +78,13 @@ public class MainLayout extends AppLayout {
             nav.add(link(VaadinIcon.DASHBOARD, "Dashboard", DashboardView.class));
             nav.add(link(VaadinIcon.MAP_MARKER, "Live map", MapView.class));
         }
-        nav.add(link(VaadinIcon.WARNING, "Disasters", DisasterListView.class));
-        nav.add(link(VaadinIcon.CLIPBOARD_TEXT, "Relief requests", RequestListView.class));
+        if (!staff) {
+            nav.add(link(VaadinIcon.HOME, "Home", CitizenHomeView.class));
+        }
+        if (staff) {
+            nav.add(link(VaadinIcon.WARNING, "Disasters", DisasterListView.class));
+            nav.add(link(VaadinIcon.CLIPBOARD_TEXT, "Relief requests", RequestListView.class));
+        }
         if (staff) {
             if (Roles.in(role, Roles.LOGISTICS)) {
                 nav.add(link(VaadinIcon.STOCK, "Inventory", InventoryView.class));
@@ -133,6 +139,9 @@ public class MainLayout extends AppLayout {
         lookup.setWidth("11rem");
         Button open = new Button("Open", e -> openRequest(lookup));
         open.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        boolean staffUser = Roles.in(role, Roles.STAFF);
+        lookup.setVisible(staffUser);
+        open.setVisible(staffUser);
 
         Div spacer = new Div();
         spacer.addClassName("spacer");

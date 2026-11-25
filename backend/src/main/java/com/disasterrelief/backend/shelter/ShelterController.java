@@ -41,6 +41,13 @@ public class ShelterController {
         return service.list(status, overcrowdedOnly, page, size, sort);
     }
 
+    /** Any signed-in user: open shelters with free beds (public fields only). */
+    @GetMapping("/open")
+    public PageResponse<PublicShelterResponse> listOpen(@RequestParam(required = false) Integer page,
+                                                        @RequestParam(required = false) Integer size) {
+        return service.listOpenPublic(page, size);
+    }
+
     @GetMapping("/{id}")
     @StaffOnly
     public ShelterResponse get(@PathVariable long id) {
