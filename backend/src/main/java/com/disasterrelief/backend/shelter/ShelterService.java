@@ -30,6 +30,16 @@ public class ShelterService {
         return repository.search(normalized, Boolean.TRUE.equals(overcrowdedOnly), query);
     }
 
+    /** OPEN shelters with free beds, for any signed-in user (citizens included), limited to public fields. */
+    @Transactional(readOnly = true)
+    public PageResponse<PublicShelterResponse> listOpenPublic(Integer page, Integer size) {
+        PageQuery query = PageQuery.parse(page, size, null, ShelterRepository.SORTS, "name", false);
+        PageResponse<ShelterResponse> open = repository.search("OPEN", false, query);
+        return new PageResponse<>(open.content().stream().filter(s -> s.freeBeds() > 0)
+                .map(PublicShelterResponse::from).toList(), open.page(), open.size(), open.totalElements(),
+                open.totalPages());
+    }
+
     @Transactional(readOnly = true)
     public ShelterResponse get(long id) {
         return repository.findById(id).orElseThrow(() -> ApiException.notFound("Shelter " + id + " was not found."));

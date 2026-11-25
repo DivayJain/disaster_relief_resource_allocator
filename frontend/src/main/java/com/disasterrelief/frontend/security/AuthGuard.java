@@ -1,6 +1,7 @@
 package com.disasterrelief.frontend.security;
 
 import com.disasterrelief.frontend.session.UserSession;
+import com.disasterrelief.frontend.views.CitizenHomeView;
 import com.disasterrelief.frontend.views.LoginView;
 import com.disasterrelief.frontend.views.RegisterView;
 import com.vaadin.flow.router.BeforeEnterEvent;
@@ -28,6 +29,13 @@ public class AuthGuard implements VaadinServiceInitListener {
         boolean publicPage = LoginView.class.equals(target) || RegisterView.class.equals(target);
         if (!publicPage && session.current().isEmpty()) {
             event.forwardTo(LoginView.class);
+            return;
+        }
+        // Citizens and volunteers have one screen; every staff screen is out of reach for them (the server
+        // refuses their calls too, this just avoids sending them to a page that can only show an error).
+        if (!publicPage && !CitizenHomeView.class.equals(target)
+                && session.current().isPresent() && !Roles.in(session.user().role(), Roles.STAFF)) {
+            event.forwardTo(CitizenHomeView.class);
         }
     }
 }
