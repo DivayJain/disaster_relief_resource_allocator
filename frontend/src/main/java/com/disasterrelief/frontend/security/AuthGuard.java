@@ -2,12 +2,13 @@ package com.disasterrelief.frontend.security;
 
 import com.disasterrelief.frontend.session.UserSession;
 import com.disasterrelief.frontend.views.LoginView;
+import com.disasterrelief.frontend.views.RegisterView;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.server.ServiceInitEvent;
 import com.vaadin.flow.server.VaadinServiceInitListener;
 import org.springframework.stereotype.Component;
 
-/** Every page except the login page requires a valid login; otherwise the user is sent to the login page. */
+/** Every page except the login and sign-up pages requires a valid login; otherwise the user is sent to the login page. */
 @Component
 public class AuthGuard implements VaadinServiceInitListener {
 
@@ -23,7 +24,9 @@ public class AuthGuard implements VaadinServiceInitListener {
     }
 
     void beforeEnter(BeforeEnterEvent event) {
-        if (!LoginView.class.equals(event.getNavigationTarget()) && session.current().isEmpty()) {
+        Class<?> target = event.getNavigationTarget();
+        boolean publicPage = LoginView.class.equals(target) || RegisterView.class.equals(target);
+        if (!publicPage && session.current().isEmpty()) {
             event.forwardTo(LoginView.class);
         }
     }
